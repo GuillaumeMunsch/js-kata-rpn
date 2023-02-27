@@ -2,7 +2,7 @@ import { allOperators, BinaryOperator, binaryOperators, Operand, Operator, Unary
 import evaluateBinaryOperation from "./evaluateOperation/evaluateBinaryOperation";
 import evaluateUnaryOperation from "./evaluateOperation/evaluateUnaryOperation";
 import Stack from "./stack";
-import { createSuccess, isError, Success, Error, Result } from "./utils/result";
+import { createSuccess, Result } from "./utils/result";
 
 export type Token = Operand | Operator;
 
@@ -12,10 +12,10 @@ const isOperator = (token: Token): token is Operator => allOperators.includes(to
 const isBinaryOperator = (operator: Operator): operator is BinaryOperator =>
   binaryOperators.includes(operator as BinaryOperator);
 
-const computeNewBinaryOperationStack = ({ stack, token }: { token: BinaryOperator; stack: Stack<Operand> }) => {
-  const result = evaluateBinaryOperation({ operator: token, operands: stack.pop(2).elements });
-  return isError(result) ? result : createSuccess(stack.push(result.payload));
-};
+const computeNewBinaryOperationStack = ({ stack, token }: { token: BinaryOperator; stack: Stack<Operand> }) =>
+  evaluateBinaryOperation({ operator: token, operands: stack.pop(2).elements })
+    // Map on success only
+    .map((payload) => createSuccess(stack.push(payload)));
 
 const computeNewUnaryOperationStack = ({ stack, token }: { token: UnaryOperator; stack: Stack<Operand> }) =>
   createSuccess(
@@ -43,27 +43,30 @@ const recursivelyEvaluateRPN = ({
 }: {
   tokens: Token[];
   stack: Stack<Operand>;
-}): Success<{ stack: Stack<Operand>; tokens: Token[] }> | Error => {
+}): Result<{ stack: Stack<Operand>; tokens: Token[] }> => {
   if (tokens.length === 0) return createSuccess({ tokens, stack });
 
   const [token, ...remainingTokens] = tokens;
 
-  const newStackResult = computeNewStackFromToken({ stack, token });
-  if (isError(newStackResult)) return newStackResult;
-  return recursivelyEvaluateRPN({
-    tokens: remainingTokens,
-    stack: newStackResult.payload,
-  });
+  return (
+    computeNewStackFromToken({ stack, token })
+      // Map on success only
+      .map((payload) =>
+        recursivelyEvaluateRPN({
+          tokens: remainingTokens,
+          stack: payload,
+        })
+      )
+  );
 };
 
-const evaluateRPN = (tokens: EvaluateRPNProps): Result<Operand> => {
-  const result = recursivelyEvaluateRPN({
+const evaluateRPN = (tokens: EvaluateRPNProps): Result<Operand> =>
+  recursivelyEvaluateRPN({
     tokens,
     stack: new Stack<Operand>(),
-  });
-  if (isError(result)) return result;
-
-  return createSuccess(result.payload.stack.pop().elements[0]);
-};
+  })
+    // Map on success only
+    .map((payload) => createSuccess(payload.stack.pop().elements[0]));
+;
 
 export default evaluateRPN;

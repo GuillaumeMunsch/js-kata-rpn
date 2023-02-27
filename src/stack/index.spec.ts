@@ -68,5 +68,4 @@ describe("Stack", () => {
     expect(stackElements).toEqual([0]);
     expect(initialElements).toEqual([0, 1, 3, 5]);
   });
-  
 });

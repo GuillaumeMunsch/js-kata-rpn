@@ -1,5 +1,6 @@
 // @ts-ignore see https://github.com/jest-community/jest-extended#setup
 import * as matchers from "jest-extended";
+import { getSuccess } from "../utils/result";
 import evaluateBinaryOperation, { BinaryOperationInput } from "./evaluateBinaryOperation";
 import evaluateUnaryOperation, { UnaryOperationInput } from "./evaluateUnaryOperation";
 
@@ -17,7 +18,7 @@ describe("Binary Operation", () => {
     const operationResult = evaluateBinaryOperation(operation);
 
     // THEN
-    expect(operationResult).toEqual(3);
+    expect(getSuccess(operationResult)).toEqual(3);
   });
 
   it("Should execute an operation 3 5 +", () => {
@@ -31,7 +32,7 @@ describe("Binary Operation", () => {
     const operationResult = evaluateBinaryOperation(operation);
 
     // THEN
-    expect(operationResult).toEqual(8);
+    expect(getSuccess(operationResult)).toEqual(8);
   });
 
   it("Should execute an operation 5 3 -", () => {
@@ -45,7 +46,7 @@ describe("Binary Operation", () => {
     const operationResult = evaluateBinaryOperation(operation);
 
     // THEN
-    expect(operationResult).toEqual(2);
+    expect(getSuccess(operationResult)).toEqual(2);
   });
 
   it("Should execute an operation 10 3 -", () => {
@@ -59,7 +60,7 @@ describe("Binary Operation", () => {
     const operationResult = evaluateBinaryOperation(operation);
 
     // THEN
-    expect(operationResult).toEqual(7);
+    expect(getSuccess(operationResult)).toEqual(7);
   });
 
   it("Should execute an operation 2 3 *", () => {
@@ -73,7 +74,7 @@ describe("Binary Operation", () => {
     const operationResult = evaluateBinaryOperation(operation);
 
     // THEN
-    expect(operationResult).toEqual(6);
+    expect(getSuccess(operationResult)).toEqual(6);
   });
 
   it("Should execute an operation 10 2 /", () => {
@@ -87,7 +88,7 @@ describe("Binary Operation", () => {
     const operationResult = evaluateBinaryOperation(operation);
 
     // THEN
-    expect(operationResult).toEqual(5);
+    expect(getSuccess(operationResult)).toEqual(5);
   });
 });
 
@@ -103,6 +104,6 @@ describe("Unary operation", () => {
     const operationResult = evaluateUnaryOperation(operation);
 
     // THEN
-    expect(operationResult).toEqual(-2);
+    expect(getSuccess(operationResult)).toEqual(-2);
   });
 });

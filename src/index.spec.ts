@@ -25,7 +25,7 @@ describe("RPN", () => {
     const rpnResult = evaluateRPN(rpnInput);
 
     // THEN
-    expect(rpnResult).toEqual(6);
+    expect(getSuccess(rpnResult)).toEqual(6);
   });
 
   it("Should execute a 2 5 * RPN", () => {
@@ -36,7 +36,7 @@ describe("RPN", () => {
     const rpnResult = evaluateRPN(rpnInput);
 
     // THEN
-    expect(rpnResult).toEqual(10);
+    expect(getSuccess(rpnResult)).toEqual(10);
   });
 
   it("Should execute a 2 5 + 2 * RPN", () => {
@@ -47,7 +47,7 @@ describe("RPN", () => {
     const rpnResult = evaluateRPN(rpnInput);
 
     // THEN
-    expect(rpnResult).toEqual(14);
+    expect(getSuccess(rpnResult)).toEqual(14);
   });
 
   it("Should execute a 2 5 + 2 * 4 - 2 / RPN", () => {
@@ -58,7 +58,7 @@ describe("RPN", () => {
     const rpnResult = evaluateRPN(rpnInput);
 
     // THEN
-    expect(rpnResult).toEqual(5);
+    expect(getSuccess(rpnResult)).toEqual(5);
   });
 
   it("Should execute a 2 N RPN", () => {
@@ -69,7 +69,7 @@ describe("RPN", () => {
     const rpnResult = evaluateRPN(rpnInput);
 
     // THEN
-    expect(rpnResult).toEqual(-2);
+    expect(getSuccess(rpnResult)).toEqual(-2);
   });
 
   it("Should execute a 2 5 + 2 * 4 - 2 / N RPN", () => {
@@ -80,7 +80,7 @@ describe("RPN", () => {
     const rpnResult = evaluateRPN(rpnInput);
 
     // THEN
-    expect(rpnResult).toEqual(-5);
+    expect(getSuccess(rpnResult)).toEqual(-5);
   });
 });
 
